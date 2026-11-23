@@ -165,7 +165,7 @@ jacocoTestReport {
 
 jib {
     from {
-        image = 'amazoncorretto:25.0.2-al2023-headless'
+        image = 'eclipse-temurin:25.0.5.1_2-jre-alpine-3.24'
         container {
             ports = ["8080", "8081", "8025"]
             creationTime = 'USE_CURRENT_TIMESTAMP'
@@ -184,18 +184,14 @@ jib {
                 architecture = 'amd64'
                 os = 'linux'
             }
-            platform {
-                architecture = 'arm64'
-                os = 'linux'
-            }
         }
     }
     to {
-        image = 'gessnerfl/fake-smtp-server'
+        image = 'lmartelli/fake-smtp-server'
         tags = [scmVersion.version, 'latest']
         auth {
-            username = DOCKERHUB_USERNAME
-            password = DOCKERHUB_TOKEN
+            username = "lmartelli"
+            password = "grpJbJ8He@4&Fso@y8"
         }
     }
 }
