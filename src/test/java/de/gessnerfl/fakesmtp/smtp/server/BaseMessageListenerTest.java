@@ -28,8 +28,6 @@ class BaseMessageListenerTest {
     @Mock
     private EmailRepository emailRepository;
     @Mock
-    private MessageForwarder messageForwarder;
-    @Mock
     private BlockedRecipientAddresses blockedRecipientAddresses;
     @Mock
     private EmailSseEmitterService emailSseEmitterService;
@@ -83,7 +81,6 @@ class BaseMessageListenerTest {
         assertEquals(contentString, rawData.getContentAsString());
         verify(emailRepository).save(mail);
         verify(emailSseEmitterService).sendEmailReceivedEvent(savedMail);
-        verify(messageForwarder).forward(rawData);
     }
 
     @Test
@@ -101,7 +98,6 @@ class BaseMessageListenerTest {
 
             verify(emailRepository, never()).save(any(Email.class));
             verify(emailSseEmitterService, never()).sendEmailReceivedEvent(any(Email.class));
-            verify(messageForwarder, never()).forward(any(RawData.class));
         });
     }
 }

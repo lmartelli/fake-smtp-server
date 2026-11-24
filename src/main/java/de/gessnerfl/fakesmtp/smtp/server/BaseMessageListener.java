@@ -19,7 +19,6 @@ public class BaseMessageListener implements MessageListener {
     private final EmailFactory emailFactory;
     private final EmailFilter emailFilter;
     private final EmailRepository emailRepository;
-    private final MessageForwarder messageForwarder;
     private final EmailSseEmitterService emailSseEmitterService;
     private final Logger logger;
 
@@ -28,14 +27,12 @@ public class BaseMessageListener implements MessageListener {
                                EmailFactory emailFactory,
                                EmailFilter emailFilter,
                                EmailRepository emailRepository,
-                               MessageForwarder messageForwarder,
                                EmailSseEmitterService emailSseEmitterService,
                                Logger logger) {
         this.blockedRecipientAddresses = blockedRecipientAddresses;
         this.emailFactory = emailFactory;
         this.emailFilter = emailFilter;
         this.emailRepository = emailRepository;
-        this.messageForwarder = messageForwarder;
         this.emailSseEmitterService = emailSseEmitterService;
         this.logger = logger;
     }
@@ -56,8 +53,6 @@ public class BaseMessageListener implements MessageListener {
             email = emailRepository.save(email);
 
             emailSseEmitterService.sendEmailReceivedEvent(email);
-
-            messageForwarder.forward(rawData);
         }
     }
 }
