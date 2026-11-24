@@ -46,8 +46,6 @@ dependencies {
     implementation(libs.springdocOpenapi)
     implementation(libs.commonsBeanUtils)
 
-    runtimeOnly(libs.micrometerPrometheus)
-
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation(libs.asm)
@@ -155,7 +153,7 @@ jib {
     from {
         image = 'eclipse-temurin:25.0.5.1_2-jre-alpine-3.24'
         container {
-            ports = ["8080", "8081", "8025"]
+            ports = ["8080", "8025"]
             creationTime = 'USE_CURRENT_TIMESTAMP'
             jvmFlags = ['-Djava.security.egd=file:/dev/./urandom', '-Dfile.encoding=utf-8']
         }

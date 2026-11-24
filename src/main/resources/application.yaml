@@ -2,14 +2,6 @@ server:
   port: 8080
   shutdown: immediate
 
-management:
-  server:
-    port: 8081
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-
 spring:
   profiles:
     active: default

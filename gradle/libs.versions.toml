@@ -13,9 +13,6 @@ snakeyaml         = "2.6"
 jaxbRuntime       = "4.0.7"
 springdocOpenapi  = "3.0.3"
 
-# Runtime libraries
-micrometer        = "1.16.0"
-
 # Test libraries
 asm               = "9.9.1"
 commonsLang3      = "3.20.0"
@@ -28,7 +25,6 @@ snakeyaml              = { module = "org.yaml:snakeyaml",                       
 jaxbRuntime            = { module = "org.glassfish.jaxb:jaxb-runtime",                               version.ref = "jaxbRuntime" }
 jacksonDatatypeJsr310  = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
 springdocOpenapi       = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui",              version.ref = "springdocOpenapi" }
-micrometerPrometheus   = { module = "io.micrometer:micrometer-registry-prometheus",                   version.ref = "micrometer" }
 asm                    = { module = "org.ow2.asm:asm",                                                version.ref = "asm" }
 commonsLang3           = { module = "org.apache.commons:commons-lang3",                               version.ref = "commonsLang3" }
 commonsBeanUtils       = { module = "commons-beanutils:commons-beanutils",                            version.ref = "commonsBeanUtils" }
