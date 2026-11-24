@@ -32,16 +32,11 @@ public class CommandRegistry {
             throw new InvalidCommandNameException("Error: bad syntax");
         }
 
-        final var commandStringUpperCase = commandString.toUpperCase(Locale.ENGLISH);
+	    final var token = new StringTokenizer(commandString).nextToken();
         try {
-            return CommandVerb.valueOf(commandStringUpperCase);
-        } catch (IllegalArgumentException e1) {
-            final StringTokenizer stringTokenizer = new StringTokenizer(commandStringUpperCase);
-            try {
-                return CommandVerb.valueOf(stringTokenizer.nextToken());
-            } catch (IllegalArgumentException e2) {
-                throw new UnknownCommandException("Error: command not implemented");
-            }
+            return CommandVerb.valueOf(token.toUpperCase(Locale.ENGLISH));
+        } catch (IllegalArgumentException e2) {
+            throw new UnknownCommandException("Error: command not implemented: "+token);
         }
     }
 }
