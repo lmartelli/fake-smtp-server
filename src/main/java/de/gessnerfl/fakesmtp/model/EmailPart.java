@@ -2,21 +2,11 @@ package de.gessnerfl.fakesmtp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.*;
-
-@MappedSuperclass
 public abstract class EmailPart {
-    @Id
-    @GeneratedValue(generator = "email_part_generator", strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "email")
     private Email email;
 
-    @Lob
-    @Column(name = "data", nullable = false)
-    @Basic(optional = false)
     private String data;
 
     @JsonIgnore

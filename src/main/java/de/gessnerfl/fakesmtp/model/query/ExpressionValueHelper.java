@@ -1,15 +1,18 @@
 package de.gessnerfl.fakesmtp.model.query;
 
-import jakarta.persistence.criteria.Path;
-
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ExpressionValueHelper {
     private ExpressionValueHelper(){}
 
-    public static Object convertDateIfApplicable(Path<?> path, Object value) {
-        return path.getJavaType().isAssignableFrom(ZonedDateTime.class) ? parseDate(value) : value;
+    public static Object convertDateIfApplicable(Object instance, String path, Object value) {
+        Object target = PropertyUtils.getProperty(instance, path);
+        return target != null && target.getClass().isAssignableFrom(ZonedDateTime.class) ? parseDate(value) : value;
+    }
+
+    public static Object convertDateIfApplicable(Object target, Object value) {
+        return target != null && target.getClass().isAssignableFrom(ZonedDateTime.class) ? parseDate(value) : value;
     }
 
     private  static Object parseDate(Object value) {

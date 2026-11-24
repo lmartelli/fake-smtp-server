@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import jakarta.transaction.Transactional;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -22,7 +21,6 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
 @ActiveProfiles("mockserver")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

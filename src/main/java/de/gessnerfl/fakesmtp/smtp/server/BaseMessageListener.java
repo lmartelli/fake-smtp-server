@@ -6,14 +6,11 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = IOException.class)
 public class BaseMessageListener implements MessageListener {
     private final BlockedRecipientAddresses blockedRecipientAddresses;
     private final EmailFactory emailFactory;

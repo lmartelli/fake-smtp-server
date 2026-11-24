@@ -17,10 +17,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import de.gessnerfl.fakesmtp.repository.EmailRepository;
 import de.gessnerfl.fakesmtp.smtp.server.SmtpServer;
-import jakarta.transaction.Transactional;
 
 @DirtiesContext
-@Transactional
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles({ "integrationtest_with_tls_required", "integrationtest", "default" })

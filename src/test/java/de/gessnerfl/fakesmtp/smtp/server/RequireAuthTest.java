@@ -2,10 +2,7 @@ package de.gessnerfl.fakesmtp.smtp.server;
 
 import de.gessnerfl.fakesmtp.smtp.StoringMessageListener;
 import de.gessnerfl.fakesmtp.smtp.client.Client;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +13,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-@Transactional
 @ActiveProfiles({"auth_integrationtest", "default"})
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

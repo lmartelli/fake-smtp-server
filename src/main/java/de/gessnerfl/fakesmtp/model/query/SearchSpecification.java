@@ -1,10 +1,8 @@
 package de.gessnerfl.fakesmtp.model.query;
 
-import org.springframework.data.jpa.domain.Specification;
+import java.util.function.Predicate;
 
-import jakarta.persistence.criteria.*;
-
-public class SearchSpecification<T> implements Specification<T> {
+public class SearchSpecification<T> {
 
     private final transient SearchRequest request;
 
@@ -12,9 +10,7 @@ public class SearchSpecification<T> implements Specification<T> {
         this.request = request;
     }
 
-    @Override
-    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        return request.getFilter().map(e -> e.toPredicate(root, query, cb)).orElse(null);
+    public Predicate<T> toPredicate() {
+        return request.getFilter().map(filterExpression -> filterExpression.<T>toPredicate()).orElse(_ -> true);
     }
-
 }

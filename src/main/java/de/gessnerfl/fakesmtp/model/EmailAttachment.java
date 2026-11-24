@@ -2,27 +2,13 @@ package de.gessnerfl.fakesmtp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "email_attachment")
-public class EmailAttachment {
-    @Id
-    @SequenceGenerator(name = "email_attachment_generator", sequenceName = "email_attachment_sequence", allocationSize = 1)
-    @GeneratedValue(generator = "email_attachment_generator")
+public class EmailAttachment implements IdHolder<Long> {
     private Long id;
 
-    @ManyToOne(fetch= FetchType.LAZY, optional = false)
-    @JoinColumn(name="email")
     private Email email;
 
-    @Column(name="filename", nullable = false, length = 1024)
-    @Basic(optional = false)
     private String filename;
 
-    @Lob
-    @Column(name="data", nullable = false)
-    @Basic(optional = false)
     private byte[] data;
 
     public Long getId() {

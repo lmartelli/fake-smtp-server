@@ -3,56 +3,31 @@ package de.gessnerfl.fakesmtp.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.*;
-
 import java.time.ZonedDateTime;
 import java.util.*;
 
 import static java.util.Comparator.comparing;
 
-@Entity
-@Table(name = "email")
-public class Email {
-    @Id
-    @SequenceGenerator(name = "email_generator", sequenceName = "email_sequence", allocationSize = 1)
-    @GeneratedValue(generator = "email_generator")
+public class Email implements IdHolder<Long> {
     private Long id;
 
-    @Column(name = "from_address", length = 255, nullable = false)
-    @Basic(optional = false)
     private String fromAddress;
 
-    @Column(name = "to_address", length = 255, nullable = false)
-    @Basic(optional = false)
     private String toAddress;
 
-    @Lob
-    @Column(name = "subject", nullable = false)
-    @Basic(optional = false)
     private String subject;
 
-    @Column(name = "received_on", nullable = false)
-    @Basic(optional = false)
-    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone="UTC")
     private ZonedDateTime receivedOn;
 
-    @Lob
-    @Column(name = "raw_data", nullable = false)
-    @Basic(optional = false)
     private String rawData;
 
-    @Column(name = "message_id", nullable = true)
-    @Basic(optional = true)
     private String messageId;
 
-    @OneToMany(mappedBy = "email", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EmailContent> contents = new ArrayList<>();
 
-    @OneToMany(mappedBy = "email", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EmailAttachment> attachments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "email", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InlineImage> inlineImages = new ArrayList<>();
 
     public Long getId() {

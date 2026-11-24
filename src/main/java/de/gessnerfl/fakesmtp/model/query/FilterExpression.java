@@ -3,10 +3,8 @@ package de.gessnerfl.fakesmtp.model.query;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+
+import java.util.function.Predicate;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -27,5 +25,5 @@ import jakarta.persistence.criteria.Root;
         @Type(value = GreaterThanOrEqualExpression.class, name = "greater_than_or_equal"),
 })
 public interface FilterExpression {
-    <T> Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb);
+    <T> Predicate<T> toPredicate();
 }

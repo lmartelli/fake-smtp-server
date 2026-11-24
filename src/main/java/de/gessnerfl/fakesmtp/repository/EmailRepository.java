@@ -1,25 +1,40 @@
 package de.gessnerfl.fakesmtp.repository;
 
 import de.gessnerfl.fakesmtp.model.Email;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
-@Repository
-public interface EmailRepository extends JpaRepository<Email, Long>, JpaSpecificationExecutor<Email> {
+@Component
+public class EmailRepository extends Repository<Email> {
 
-    @Transactional
-    @Modifying
-    @Query(value = "DELETE email o WHERE o.id IN ( SELECT i.id FROM email i ORDER BY i.received_on DESC OFFSET ?1)", nativeQuery = true)
-    int deleteEmailsExceedingDateRetentionLimit(int maxNumber);
+    public int deleteEmailsExceedingDateRetentionLimit(int maxNumber) {
+        synchronized (entities) {
+            if (entities.size() > maxNumber) {
+                int toDelete = entities.size() - maxNumber;
+                var it = entities.keySet().iterator();
+                int deleted = 0;
+                while (deleted < toDelete) {
+                    it.next();
+                    it.remove();
+                    deleted += 1;
+                }
+                return deleted;
+            } else {
+                return 0;
+            }
+        }
+    }
 
-    @Transactional
-    @Query
-    List<Email> findBySubject(String subject);
+    public List<Email> findBySubject(String subject) {
+        return getEntities().stream()
+                .filter(mail -> Objects.equals(mail.getSubject(), subject))
+                .toList();
+    }
 
+    @Override
+    protected int defaultOrder(Email o1, Email o2) {
+        return o1.getId().compareTo(o2.getId());
+    }
 }
