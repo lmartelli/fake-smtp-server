@@ -14,6 +14,7 @@ export interface InlineImage {
 export interface EmailAttachment {
     id: number,
     filename: string,
+    data: string
 }
 
 export interface Email {

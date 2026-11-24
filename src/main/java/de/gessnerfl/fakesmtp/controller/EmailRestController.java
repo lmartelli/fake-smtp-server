@@ -24,7 +24,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import de.gessnerfl.fakesmtp.model.Email;
 import de.gessnerfl.fakesmtp.model.query.SearchRequest;
 import de.gessnerfl.fakesmtp.model.query.SearchSpecification;
-import de.gessnerfl.fakesmtp.repository.EmailAttachmentRepository;
 import de.gessnerfl.fakesmtp.repository.EmailRepository;
 import de.gessnerfl.fakesmtp.service.EmailSseEmitterService;
 import de.gessnerfl.fakesmtp.util.MediaTypeUtil;
@@ -41,19 +40,16 @@ public class EmailRestController {
     private static final String DEFAULT_SORT_PROPERTY = "receivedOn";
 
     private final EmailRepository emailRepository;
-    private final EmailAttachmentRepository emailAttachmentRepository;
     private final MediaTypeUtil mediaTypeUtil;
     private final ServletContext servletContext;
     private final EmailSseEmitterService emailSseEmitterService;
 
     @Autowired
     public EmailRestController(EmailRepository emailRepository,
-            EmailAttachmentRepository emailAttachmentRepository,
             MediaTypeUtil mediaTypeUtil,
             ServletContext servletContext,
             EmailSseEmitterService emailSseEmitterService) {
         this.emailRepository = emailRepository;
-        this.emailAttachmentRepository = emailAttachmentRepository;
         this.mediaTypeUtil = mediaTypeUtil;
         this.servletContext = servletContext;
         this.emailSseEmitterService = emailSseEmitterService;
@@ -73,23 +69,6 @@ public class EmailRestController {
         return emailRepository.findById(id).orElseThrow(() -> new EmailNotFoundException("Could not find email " + id));
     }
 
-    @GetMapping("/{mailId}/attachments/{attachmentId}")
-    public ResponseEntity<ByteArrayResource> getEmailAttachmentById(@PathVariable Long mailId,
-            @PathVariable Long attachmentId) {
-        var attachment = emailAttachmentRepository.findById(attachmentId)
-                .filter(a -> a.getEmail().getId().equals(mailId))
-                .orElseThrow(() -> new AttachmentNotFoundException(
-                        "Attachment with id " + attachmentId + " not found for mail " + mailId));
-
-        var mediaType = mediaTypeUtil.getMediaTypeForFileName(this.servletContext, attachment.getFilename());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + attachment.getFilename())
-                .contentType(mediaType)
-                .contentLength(attachment.getData().length) //
-                .body(new ByteArrayResource(attachment.getData()));
-    }
-
     @DeleteMapping("/{id}")
     public void deleteEmailById(@PathVariable Long id) {
         emailRepository.deleteById(id);
@@ -98,7 +77,6 @@ public class EmailRestController {
 
     @DeleteMapping()
     public void deleteAllEmails() {
-        emailAttachmentRepository.deleteAllInBatch();
         emailRepository.deleteAllInBatch();
         emailRepository.flush();
     }

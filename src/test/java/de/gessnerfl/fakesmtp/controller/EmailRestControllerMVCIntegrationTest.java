@@ -138,19 +138,6 @@ class EmailRestControllerMVCIntegrationTest {
     }
 
     @Test
-    void shouldReturnAttachmentForEmail() throws Exception {
-        var email = createRandomEmail(1);
-        var attachment = email.getAttachments().get(0);
-
-        this.mockMvc.perform(get("/api/emails/" + email.getId() + "/attachments/" + attachment.getId()))
-                .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + attachment.getFilename()))
-                .andExpect(header().string(HttpHeaders.CONTENT_LENGTH, String.valueOf(attachment.getData().length)))
-                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE))
-                .andExpect(content().bytes(attachment.getData()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     void shouldReturnErrorWhenAttachmentIsRequestedButAttachmentIdIsNotValid() throws Exception {
         var email = createRandomEmail(1);
 

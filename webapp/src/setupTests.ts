@@ -52,7 +52,9 @@ export const testEmailWithAttachment: Email = {
     rawData: "test raw content\non multiple lines 2",
     contents: [],
     inlineImages: [],
-    attachments: [{ id: 1234, filename: "test1.png" }, { id: 2345, filename: "test2.png" }]
+    attachments: [
+        { id: 1234, filename: "test1.png", data: "YmxhIGJsYQ==" },
+        { id: 2345, filename: "test2.png", data: "Zm9vIGJhcg==" }]
 }
 
 const generateTestData = (): Email[] => Array.from(Array(15).keys()).map(i => {

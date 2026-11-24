@@ -18,7 +18,8 @@ export const EmailAttachmentPanel: FunctionComponent<EmailDetailsProperties> = (
                     variant="text"
                     size="small"
                     startIcon={<AttachFileIcon/>}
-                    href={`${getBasePath()}/api/emails/${email.id}/attachments/${attachment.id}`}>
+                    download={attachment.filename}
+                    href={`data:application/octet-stream;base64,${attachment.data}`}>
                 {attachment.filename}
             </Button>
         )
