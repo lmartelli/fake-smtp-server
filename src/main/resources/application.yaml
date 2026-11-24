@@ -1,6 +1,6 @@
 server:
   port: 8080
-  shutdown: graceful
+  shutdown: immediate
 
 management:
   server:
