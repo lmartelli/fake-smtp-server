@@ -27,10 +27,6 @@ spring:
   jackson:
     time-zone: "UTC"
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-
 fakesmtp:
   port: 8025
   webapp:

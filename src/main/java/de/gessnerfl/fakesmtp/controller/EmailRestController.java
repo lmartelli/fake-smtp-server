@@ -27,9 +27,6 @@ import de.gessnerfl.fakesmtp.model.query.SearchSpecification;
 import de.gessnerfl.fakesmtp.repository.EmailRepository;
 import de.gessnerfl.fakesmtp.service.EmailSseEmitterService;
 import de.gessnerfl.fakesmtp.util.MediaTypeUtil;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import jakarta.servlet.ServletContext;
 
 @RestController
@@ -56,11 +53,8 @@ public class EmailRestController {
     }
 
     @GetMapping()
-    @Parameter(name = "page", description = "Page number", example = "0")
-    @Parameter(name = "size", description = "Page size", example = "1")
-    @Parameter(name = "sort", description = "Sort criteria", example = DEFAULT_SORT_PROPERTY)
     public Page<Email> all(
-            @SortDefault(sort = DEFAULT_SORT_PROPERTY, direction = Sort.Direction.DESC) @Parameter(hidden = true) Pageable pageable) {
+            @SortDefault(sort = DEFAULT_SORT_PROPERTY, direction = Sort.Direction.DESC) Pageable pageable) {
         return emailRepository.findAll(pageable);
     }
 
@@ -97,58 +91,7 @@ public class EmailRestController {
     }
 
     @PostMapping(value = "/search")
-    public Page<Email> search(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Search request", content = @Content(mediaType = "application/json", examples = {
-                    @ExampleObject(value = """
-                            {
-                              "filter": {
-                                  "type": "biexp",
-                                  "property": "toAddress",
-                                  "operator": "EQUAL",
-                                  "value": "test@example.com"
-                              },
-                              "sort": {
-                                  "orders": [
-                                     {
-                                        "property": "receivedOn",
-                                        "direction": "DESC"
-                                     }
-                                  ]
-                              },
-                              "page": 0,
-                              "size": 10
-                            }"""),
-                    @ExampleObject(value = """
-                            {
-                              "filter": {
-                                  "type": "and",
-                                  "expressions": [
-                                      {
-                                          "type": "biexp",
-                                          "property": "toAddress",
-                                          "operator": "EQUAL",
-                                          "value": "test@example.com"
-                                      },
-                                      {
-                                          "type": "biexp",
-                                          "property": "subject",
-                                          "operator": "LIKE",
-                                          "value": "foo"
-                                      }
-                                  ]
-                              },
-                              "sort": {
-                                  "orders": [
-                                     {
-                                        "property": "receivedOn",
-                                        "direction": "DESC"
-                                     }
-                                  ]
-                              },
-                              "page": 0,
-                              "size": 10
-                            }""")
-            })) @RequestBody SearchRequest request) {
+    public Page<Email> search(@RequestBody SearchRequest request) {
         SearchSpecification<Email> specification = new SearchSpecification<>(request);
         return emailRepository.findAll(specification, request.getPageable());
     }

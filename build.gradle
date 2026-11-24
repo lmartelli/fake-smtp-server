@@ -43,7 +43,6 @@ dependencies {
     implementation(libs.snakeyaml)
     implementation(libs.jaxbRuntime)
     implementation(libs.jacksonDatatypeJsr310)
-    implementation(libs.springdocOpenapi)
     implementation(libs.commonsBeanUtils)
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
