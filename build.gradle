@@ -36,7 +36,6 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.springframework.data:spring-data-commons")
@@ -104,22 +103,14 @@ tasks.register('copyStaticAssets', Copy) {
     dependsOn(compileJava, compileTestJava, webappNpmTest, resolveMainClassName)
     from(file('webapp/dist'))
     into(file('build/resources/main/static/'))
-    exclude("index.html")
-}
-
-tasks.register('copyTemplateAssets', Copy) {
-    dependsOn(compileJava, compileTestJava, webappNpmTest, resolveMainClassName)
-    from(file('webapp/dist/index.html'))
-    into(file('build/resources/main/templates/'))
-    filter { line -> line.replaceAll(/(href|src)(=\")([^\"]+)(\")/, 'th:$1$2@{$3}$4').replaceAll(/(name="base-path"\s+)(content=")([^"]+)(")/, '$1th:$2@{$3}$4') }
 }
 
 jar {
-    dependsOn(copyStaticAssets, copyTemplateAssets)
+    dependsOn(copyStaticAssets)
 }
 
 bootJar {
-    dependsOn(copyStaticAssets, copyTemplateAssets)
+    dependsOn(copyStaticAssets)
 }
 
 springBoot {
@@ -142,7 +133,7 @@ sonar {
 }
 
 test {
-    dependsOn(copyStaticAssets, copyTemplateAssets)
+    dependsOn(copyStaticAssets)
     useJUnitPlatform()
     finalizedBy jacocoTestReport
 }
