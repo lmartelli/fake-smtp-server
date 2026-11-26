@@ -26,8 +26,8 @@ public abstract class Repository<T extends IdHolder<Long>> {
 		return Optional.ofNullable(entities.get(id));
 	}
 
-	protected synchronized Collection<T> getEntities() {
-		return entities.values();
+	protected List<T> getEntities() {
+		return List.copyOf(entities.values());
 	}
 
 	public void deleteById(long id) {
@@ -48,8 +48,8 @@ public abstract class Repository<T extends IdHolder<Long>> {
 	public Page<T> findAll(SearchSpecification<T> specification, Pageable pageable) {
 		var pred = specification == null ? null : specification.toPredicate();
 		var matches = pred==null
-				? entities.values()
-				: entities.values().stream().filter(specification.toPredicate()).toList();
+				? getEntities()
+				: getEntities().stream().filter(specification.toPredicate()).toList();
 		long total = matches.size();
 		var items = matches.stream()
 				.sorted(getComparator(pageable.getSort()))
@@ -68,7 +68,10 @@ public abstract class Repository<T extends IdHolder<Long>> {
 	}
 
 	public List<T> findAll(Sort sort) {
-		return getEntities().stream().sorted(this::defaultOrder).toList();
+		var allEntities = getEntities();
+		if (sort!=null)
+			allEntities.sort(getComparator(sort));
+		return allEntities;
 	}
 
 	protected abstract int defaultOrder(T o1, T o2);
