@@ -11,7 +11,7 @@ import static de.gessnerfl.fakesmtp.model.query.PropertyUtils.getProperty;
 import static java.util.Collections.synchronizedMap;
 
 public abstract class Repository<T extends IdHolder<Long>> {
-	protected Map<Long,T> entities = synchronizedMap(new LinkedHashMap<>());
+	protected Map<Long, T> entities = synchronizedMap(new LinkedHashMap<>());
 
 	private AtomicLong nextId = new AtomicLong(1L);
 
@@ -78,10 +78,10 @@ public abstract class Repository<T extends IdHolder<Long>> {
 
 	Comparator<T> getComparator(Sort sort) {
 		if (sort.isSorted()) {
-			return (o1,o2) -> {
-				for(Sort.Order order: sort) {
-					int cmp = getProperty(o1,order.getProperty(), Comparable.class).compareTo(getProperty(o2, order.getProperty()));
-					if (cmp!=0) {
+			return (o1, o2) -> {
+				for (Sort.Order order : sort) {
+					int cmp = getProperty(o1, order.getProperty(), Comparable.class).compareTo(getProperty(o2, order.getProperty()));
+					if (cmp != 0) {
 						return order.isAscending() ? cmp : -cmp;
 					}
 				}

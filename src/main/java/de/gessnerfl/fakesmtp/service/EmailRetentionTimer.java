@@ -9,17 +9,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailRetentionTimer {
+	private final FakeSmtpConfigurationProperties fakeSmtpConfigurationProperties;
+	private final EmailRepository emailRepository;
+	private final Logger logger;
 
-    private final FakeSmtpConfigurationProperties fakeSmtpConfigurationProperties;
-    private final EmailRepository emailRepository;
-    private final Logger logger;
-
-    @Autowired
-    public EmailRetentionTimer(FakeSmtpConfigurationProperties fakeSmtpConfigurationProperties, EmailRepository emailRepository, Logger logger) {
-        this.fakeSmtpConfigurationProperties = fakeSmtpConfigurationProperties;
-        this.emailRepository = emailRepository;
-        this.logger = logger;
-    }
+	@Autowired
+	public EmailRetentionTimer(FakeSmtpConfigurationProperties fakeSmtpConfigurationProperties, EmailRepository emailRepository, Logger logger) {
+		this.fakeSmtpConfigurationProperties = fakeSmtpConfigurationProperties;
+		this.emailRepository = emailRepository;
+		this.logger = logger;
+	}
 
 	@Scheduled(fixedDelayString = "${fakesmtp.persistence.emailDataRetentionTimer.fixedDelay:300000}", initialDelayString = "${fakesmtp.persistence.emailDataRetentionTimer.initialDelay:60000}")
 	public void deleteOutdatedMails() {
